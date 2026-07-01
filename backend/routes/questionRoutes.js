@@ -9,9 +9,13 @@ const {
   getQueryById,
   createAnswer,
   resolveQuery,
+  getQueriesOnMyResources,
 } = require('../controllers/queryController');
 
 const router = express.Router();
+
+// GET /api/questions/mine - Queries on resources uploaded by current user
+router.get('/mine', protect, getQueriesOnMyResources);
 
 // GET   /api/questions/:id          - Fetch a single query with resource, poster, and answers
 router.get('/:id', getQueryById);

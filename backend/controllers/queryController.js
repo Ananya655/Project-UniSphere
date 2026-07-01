@@ -455,10 +455,84 @@ const resolveQuery = async (req, res, next) => {
   }
 };
 
+/**
+ * Build a query item for the resource owner's dashboard.
+ */
+const toOwnerQueryItem = (row) => ({
+  id: row.id,
+  title: row.title,
+  body: row.body,
+  is_resolved: Boolean(row.is_resolved),
+  created_at: row.created_at,
+  updated_at: row.updated_at,
+  answer_count: row.answer_count,
+  posted_by: {
+    id: row.poster_id,
+    name: row.poster_name,
+    college: row.poster_college,
+    branch: row.poster_branch,
+    current_year: row.poster_current_year,
+  },
+  resource: {
+    id: row.resource_id,
+    title: row.resource_title,
+    type: row.resource_type,
+    branch: row.resource_branch,
+    semester: row.resource_semester,
+  },
+});
+
+// =============================================================================
+// GET /api/questions/mine
+// List all queries posted on resources uploaded by the current user.
+// Protected.
+// =============================================================================
+const getQueriesOnMyResources = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const [rows] = await pool.execute(
+      `SELECT
+         q.id,
+         q.title,
+         q.body,
+         q.is_resolved,
+         q.created_at,
+         q.updated_at,
+         u.id   AS poster_id,
+         u.name AS poster_name,
+         u.college AS poster_college,
+         u.branch AS poster_branch,
+         u.current_year AS poster_current_year,
+         r.id    AS resource_id,
+         r.title AS resource_title,
+         r.type  AS resource_type,
+         r.branch AS resource_branch,
+         r.semester AS resource_semester,
+         (SELECT COUNT(*) FROM answers a WHERE a.query_id = q.id) AS answer_count
+       FROM queries q
+       INNER JOIN resources r ON q.resource_id = r.id
+       INNER JOIN users u ON q.posted_by = u.id
+       WHERE r.uploaded_by = ?
+       ORDER BY q.created_at DESC`,
+      [userId]
+    );
+
+    return res.status(200).json({
+      success: true,
+      count: rows.length,
+      queries: rows.map(toOwnerQueryItem),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createQuery,
   getQueriesByResource,
   getQueryById,
   createAnswer,
   resolveQuery,
+  getQueriesOnMyResources,
 };

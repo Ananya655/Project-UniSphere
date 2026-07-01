@@ -225,4 +225,100 @@ const getResources = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadResource, getResources };
+/**
+ * GET /api/resources/mine
+ * List resources uploaded by the authenticated user.
+ * Protected route.
+ */
+const getMyResources = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const [rows] = await pool.execute(
+      `SELECT
+        resources.id,
+        resources.title,
+        resources.description,
+        resources.subject_id,
+        resources.branch,
+        resources.semester,
+        resources.year,
+        resources.type,
+        resources.file_url,
+        resources.uploaded_by,
+        resources.downloads_count,
+        resources.created_at,
+        resources.updated_at,
+        users.name AS uploader_name,
+        users.college AS uploader_college,
+        users.branch AS uploader_branch,
+        subjects.name AS subject_name
+      FROM resources
+      INNER JOIN users ON resources.uploaded_by = users.id
+      INNER JOIN subjects ON resources.subject_id = subjects.id
+      WHERE resources.uploaded_by = ?
+      ORDER BY resources.created_at DESC`,
+      [userId]
+    );
+
+    return res.status(200).json({
+      success: true,
+      count: rows.length,
+      resources: rows.map(toResourceListItem),
+    });
+  } catch (error) {
+    console.error('Failed to fetch user resources:', error.message);
+    next(error);
+  }
+};
+
+/**
+ * POST /api/resources/:id/download
+ * Increment download count and return the file URL.
+ * Public route.
+ */
+const downloadResource = async (req, res, next) => {
+  try {
+    const resourceId = Number.parseInt(req.params.id, 10);
+
+    if (Number.isNaN(resourceId) || resourceId <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid resource ID.',
+      });
+    }
+
+    const [rows] = await pool.execute(
+      `SELECT id, title, file_url, downloads_count
+       FROM resources WHERE id = ? LIMIT 1`,
+      [resourceId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found.',
+      });
+    }
+
+    await pool.execute(
+      'UPDATE resources SET downloads_count = downloads_count + 1 WHERE id = ?',
+      [resourceId]
+    );
+
+    const resource = rows[0];
+
+    return res.status(200).json({
+      success: true,
+      message: 'Download ready.',
+      file_url: resource.file_url,
+      title: resource.title,
+      downloads_count: resource.downloads_count + 1,
+    });
+  } catch (error) {
+    console.error('Failed to process download:', error.message);
+    next(error);
+  }
+};
+
+module.exports = { uploadResource, getResources, getMyResources, downloadResource };
