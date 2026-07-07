@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
+import './RegisterForm.css';
 
 const YEAR_OPTIONS = [
   { value: '1', label: '1st year' },
@@ -96,7 +97,7 @@ function RegisterForm({ onSwitchToLogin }) {
       </div>
 
       <div className="auth-form-row">
-        <div className="auth-form-field">
+        <div className="auth-form-college">
           <Label htmlFor="register-college">College</Label>
           <Input
             id="register-college"
@@ -106,7 +107,7 @@ function RegisterForm({ onSwitchToLogin }) {
             required
           />
         </div>
-        <div className="auth-form-field">
+        <div className="auth-form-branch">
           <Label htmlFor="register-branch">Branch</Label>
           <Input
             id="register-branch"
@@ -140,7 +141,7 @@ function RegisterForm({ onSwitchToLogin }) {
 
       {error && <p className="auth-form-error">{error}</p>}
 
-      <Button type="submit" variant="coral" size="full" disabled={loading}>
+      <Button type="submit" className="subbtn" size="full" disabled={loading}>
         {loading ? 'Creating account…' : 'Create account'}
       </Button>
 

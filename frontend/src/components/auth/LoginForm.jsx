@@ -57,7 +57,7 @@ function LoginForm({ onSwitchToRegister }) {
 
       {error && <p className="auth-form-error">{error}</p>}
 
-      <Button type="submit" variant="coral" size="full" disabled={loading}>
+      <Button type="submit" className="bg-[#b7a7a9] text-white hover:bg-[#91766E]" size="full" disabled={loading}>
         {loading ? 'Signing in…' : 'Log in'}
       </Button>
 

@@ -7,11 +7,11 @@
 -- Drop and recreate for clean local development (comment out in production)
 -- DROP DATABASE IF EXISTS unisphere;
 
-CREATE DATABASE IF NOT EXISTS unisphere
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+-- CREATE DATABASE IF NOT EXISTS unisphere
+--   CHARACTER SET utf8mb4
+--   COLLATE utf8mb4_unicode_ci;
 
-USE unisphere;
+-- USE unisphere;
 
 -- =============================================================================
 -- USERS

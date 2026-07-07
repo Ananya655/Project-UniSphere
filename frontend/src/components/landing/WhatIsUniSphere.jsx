@@ -1,96 +1,74 @@
 const features = [
   {
-    id: 'upload',
-    iconBg: 'bg-1',
+    iconBg: 'var(--sky-soft)',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
-          d="M4 5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"
-          stroke="#1E3FCC"
+          d="M4 4h11l5 5v11a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"
+          stroke="#91766E"
           strokeWidth="1.6"
           strokeLinejoin="round"
         />
-        <path d="M13 3v5h5" stroke="#1E3FCC" strokeWidth="1.6" strokeLinejoin="round" />
-        <path d="M8 13h8M8 17h5" stroke="#1E3FCC" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M15 4v5h5" stroke="#91766E" strokeWidth="1.6" strokeLinejoin="round" />
+        <path d="M8 13h8M8 17h5" stroke="#91766E" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
     ),
-    title: 'Notes & question papers',
+    title: 'Resource library',
     description:
-      "Search by branch, semester, and subject to find notes, PYQs, and reference material uploaded by students who've already taken the course.",
+      'Notes, previous year question papers and reference material — filtered by branch, semester, subject and type, sorted newest first.',
   },
   {
-    iconBg: 'bg-2',
+    iconBg: '#eae5e1',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
-          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-          stroke="#E54F2E"
+          d="M21 12c0 4.4-4 8-9 8-1.2 0-2.4-.2-3.4-.6L3 20l1.1-4.2A7.9 7.9 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"
+          stroke="#B7A7A9"
           strokeWidth="1.6"
-          strokeLinecap="round"
           strokeLinejoin="round"
         />
+        <path d="M8 11.5h8M8 8.5h5" stroke="#B7A7A9" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
     ),
-    title: 'Resource-linked doubts',
+    title: 'Resource queries',
     description:
-      "Stuck on a specific note or paper? Ask right next to it. Anyone who's solved that exact problem before can answer.",
+      'Every upload has its own doubt thread. Ask right where the confusion is, get answered by whoever\'s already worked through it, then mark it resolved.',
   },
   {
-    id: 'discussions',
-    iconBg: 'bg-3',
+    iconBg: 'var(--coral-soft)',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M17 20h5v-2a4 4 0 0 0-3-3.87"
-          stroke="#2A6B3F"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M9 20H4v-2a4 4 0 0 1 3-3.87"
-          stroke="#2A6B3F"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" stroke="#2A6B3F" strokeWidth="1.6" />
-        <path
-          d="M19 7a4 4 0 0 1-3.5 3.97"
-          stroke="#2A6B3F"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h10" stroke="#000000" strokeWidth="1.6" strokeLinecap="round" />
+        <circle cx="19" cy="18" r="2" stroke="#000000" strokeWidth="1.6" />
       </svg>
     ),
-    title: 'Community discussions',
+    title: 'Discussion forum',
     description:
-      'Beyond coursework — ask about internships, placements, and exam strategy in an open forum upvoted by your peers.',
+      'Threads that live beyond a single file — exam prep, internships, placements and everything else worth asking your whole batch.',
   },
 ];
 
 function WhatIsUniSphere() {
   return (
-    <section className="section" id="about">
+    <section className="section" id="features">
       <div className="wrap">
-        <div className="section-head center">
-          <span className="eyebrow">What is UniSphere</span>
-          <h2>
-            A campus library that
-            <br />
-            never closes.
-          </h2>
+        <div className="section-head reveal">
+          <span className="eyebrow on-light">What&apos;s inside</span>
+          <h2>One place for resources, doubts and discussion.</h2>
           <p>
-            Most college knowledge lives in scattered WhatsApp groups and forgotten drives. UniSphere
-            puts it all in one searchable, organized place — built around how engineering students
-            actually study.
+            Built as three connected modules — so a resource, the question it raises, and the wider
+            conversation never get separated.
           </p>
         </div>
-
-        <div className="what-grid">
-          {features.map((feature) => (
-            <div key={feature.title} className="what-card" id={feature.id}>
-              <div className={`what-icon ${feature.iconBg}`}>{feature.icon}</div>
+        <div className="features-grid">
+          {features.map((feature, index) => (
+            <div
+              key={feature.title}
+              className={`feature-card reveal${index === 1 ? ' reveal-delay-1' : index === 2 ? ' reveal-delay-2' : ''}`}
+            >
+              <div className="feature-icon" style={{ background: feature.iconBg }}>
+                {feature.icon}
+              </div>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
             </div>

@@ -218,4 +218,93 @@ const getProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getProfile };
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name, college, branch, current_year, bio } = req.body;
+
+    if (!name || !college || !branch || !current_year) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name, college, branch, and year are required.',
+      });
+    }
+
+    const [result] = await pool.execute(
+      `UPDATE users
+       SET name = ?, college = ?, branch = ?, current_year = ?, bio = ?
+       WHERE id = ?`,
+      [name, college, branch, current_year, bio || null, req.user.id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+    }
+
+    const [rows] = await pool.execute(
+      `SELECT id, name, email, college, branch, current_year, bio, profile_picture, created_at
+       FROM users WHERE id = ? LIMIT 1`,
+      [req.user.id]
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully.',
+      user: toProfileUser(rows[0]),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * DELETE /api/auth/account
+ * Permanently delete the authenticated user's account.
+ * Requires password confirmation in the request body.
+ */
+const deleteAccount = async (req, res, next) => {
+  try {
+    const { password } = req.body;
+
+    if (!password || typeof password !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Password is required to delete your account.',
+      });
+    }
+
+    const [rows] = await pool.execute(
+      'SELECT id, password FROM users WHERE id = ? LIMIT 1',
+      [req.user.id],
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, rows[0].password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Incorrect password.',
+      });
+    }
+
+    await pool.execute('DELETE FROM users WHERE id = ?', [req.user.id]);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Account deleted successfully.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getProfile, updateProfile, deleteAccount };

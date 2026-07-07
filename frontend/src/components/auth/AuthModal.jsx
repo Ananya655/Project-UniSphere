@@ -10,6 +10,7 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import './AuthModal.css';
 
 function AuthModal() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function AuthModal() {
           <span className="auth-modal-eyebrow">UniSphere account</span>
 
           <DialogHeader className="auth-modal-header">
-            <DialogTitle>{isLogin ? 'Welcome back' : 'Join your campus'}</DialogTitle>
+            <DialogTitle className="title">{isLogin ? 'Welcome back' : 'Join your campus'}</DialogTitle>
             <DialogDescription id="auth-modal-description">
               {isLogin
                 ? 'Log in to access your notes, uploads, and community discussions.'
@@ -39,7 +40,7 @@ function AuthModal() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="auth-modal-tabs">
+          {/* <div className="auth-modal-tabs">
             <button
               type="button"
               className={`auth-modal-tab ${isLogin ? 'active' : ''}`}
@@ -54,7 +55,7 @@ function AuthModal() {
             >
               Register
             </button>
-          </div>
+          </div> */}
 
           {isLogin ? (
             <LoginForm onSwitchToRegister={() => openAuthModal('register')} />

@@ -10,7 +10,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #e54f2e;
+  color: #594245;
   font-weight: 500;
   margin-bottom: 10px;
 }
@@ -19,12 +19,21 @@
   margin-bottom: 20px;
 }
 
+.title{
+  margin-bottom: 0vh;
+  color: #200104;
+}
+.auth-modal-description{
+  
+  padding-top: 0%;
+}
+
 .auth-modal-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding: 4px;
-  background: #f3efe4;
+  background: #f4efea;
   border-radius: 10px;
   margin-bottom: 24px;
 }
@@ -44,8 +53,8 @@
 
 .auth-modal-tab.active {
   background: #ffffff;
-  color: #1b1b2f;
-  box-shadow: 0 1px 3px rgba(27, 27, 47, 0.08);
+  color: #000000;
+  box-shadow: 0 1px 3px rgba(145, 118, 110, 0.08);
 }
 
 .auth-form {
@@ -62,26 +71,41 @@
 
 .auth-form-field {
   display: flex;
+  width: 400px;
+  height: 70px;
   flex-direction: column;
   gap: 7px;
 }
-
+.auth-form-college{
+  display: flex;
+  width: 182px;
+  height: 70px;
+  flex-direction: column;
+  gap: 7px;
+}
+.auth-form-branch{
+  display: flex;
+  width: 182px;
+  height: 70px;
+  flex-direction: column;
+  gap: 7px;
+}
 .auth-select {
   flex: 1;
   height: 44px;
   width: 100%;
   border-radius: 8px;
-  border: 1px solid rgba(27, 27, 47, 0.12);
+  border: 1px solid rgba(183, 167, 169, 0.4);
   background: #ffffff;
   padding: 0 12px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #1b1b2f;
+  color: #000000;
   outline: none;
 }
 
 .auth-select:focus {
-  box-shadow: 0 0 0 2px #2d5fff;
+  box-shadow: 0 0 0 2px #b7a7a9;
 }
 
 .auth-form-error {
@@ -104,7 +128,7 @@
   padding: 0;
   font: inherit;
   font-weight: 600;
-  color: #2d5fff;
+  color: #b7a7a9;
   cursor: pointer;
 }
 
@@ -119,8 +143,8 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: #13131f;
-  color: #ededf4;
+  background: #f6ece3;
+  color: #000000;
   font-family: 'Inter', sans-serif;
 }
 
@@ -128,8 +152,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 3px solid #2a2a3d;
-  border-top-color: #2d5fff;
+  border: 3px solid #e9ded5;
+  border-top-color: #b7a7a9;
   animation: auth-spin 0.8s linear infinite;
 }
 

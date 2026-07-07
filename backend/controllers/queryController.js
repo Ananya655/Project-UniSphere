@@ -62,7 +62,7 @@ const createQuery = async (req, res, next) => {
     // Verify resource exists
     // -------------------------------------------------------------------------
     const [resources] = await pool.execute(
-      'SELECT id, title FROM resources WHERE id = ? LIMIT 1',
+      'SELECT id, title, uploaded_by FROM resources WHERE id = ? LIMIT 1',
       [resourceId]
     );
 
@@ -70,6 +70,13 @@ const createQuery = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: 'Resource not found.',
+      });
+    }
+
+    if (resources[0].uploaded_by === req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'You cannot ask a query on your own resource.',
       });
     }
 
