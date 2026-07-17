@@ -1,23 +1,7 @@
--- =============================================================================
--- UniSphere Database Schema
--- Academic Resource Sharing & Student Community Platform
--- MySQL 8.0+ | InnoDB | UTF-8 (utf8mb4)
--- =============================================================================
 
--- Drop and recreate for clean local development (comment out in production)
--- DROP DATABASE IF EXISTS unisphere;
-
--- CREATE DATABASE IF NOT EXISTS unisphere
---   CHARACTER SET utf8mb4
---   COLLATE utf8mb4_unicode_ci;
-
--- USE unisphere;
-
--- =============================================================================
 -- USERS
 -- Stores student accounts and profile information.
 -- Password column holds bcrypt hash (never store plain text).
--- =============================================================================
 CREATE TABLE users (
   id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   name            VARCHAR(100)    NOT NULL,
@@ -39,11 +23,10 @@ CREATE TABLE users (
   CONSTRAINT chk_users_name_length CHECK (CHAR_LENGTH(name) >= 2)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- =============================================================================
+
 -- SUBJECTS
 -- Canonical list of subjects scoped by branch and semester.
 -- Prevents duplicate subject names within the same branch/semester.
--- =============================================================================
 CREATE TABLE subjects (
   id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   name       VARCHAR(150)    NOT NULL,
@@ -60,10 +43,8 @@ CREATE TABLE subjects (
   CONSTRAINT chk_subjects_semester CHECK (semester BETWEEN 1 AND 8)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- =============================================================================
 -- RESOURCES
 -- Uploaded academic files (notes, PYQs, reference material).
--- =============================================================================
 CREATE TABLE resources (
   id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   title           VARCHAR(200)    NOT NULL,
@@ -103,10 +84,8 @@ CREATE TABLE resources (
   CONSTRAINT chk_resources_downloads_count CHECK (downloads_count >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- =============================================================================
 -- QUERIES (Academic Q&A)
 -- Student-posted academic questions tied to a subject.
--- =============================================================================
 
 
 CREATE TABLE queries (
@@ -141,10 +120,8 @@ CREATE TABLE queries (
     INDEX idx_resolved(is_resolved)
 );
 
--- =============================================================================
 -- ANSWERS
 -- Responses to academic queries.
--- =============================================================================
 CREATE TABLE answers (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
@@ -172,10 +149,8 @@ CREATE TABLE answers (
     INDEX idx_posted_by(posted_by)
 );
 
--- =============================================================================
 -- DISCUSSION POSTS
 -- Community forum threads (exam prep, internships, placements, etc.).
--- =============================================================================
 CREATE TABLE discussion_posts (
   id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   title      VARCHAR(250)    NOT NULL,
@@ -196,10 +171,8 @@ CREATE TABLE discussion_posts (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- =============================================================================
 -- DISCUSSION COMMENTS
 -- Comments on forum posts.
--- =============================================================================
 CREATE TABLE discussion_comments (
   id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   post_id    BIGINT UNSIGNED NOT NULL,
@@ -221,10 +194,8 @@ CREATE TABLE discussion_comments (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- =============================================================================
 -- POST UPVOTES
 -- Tracks which users upvoted which discussion posts (one vote per user per post).
--- =============================================================================
 CREATE TABLE post_upvotes (
   id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   post_id    BIGINT UNSIGNED NOT NULL,
